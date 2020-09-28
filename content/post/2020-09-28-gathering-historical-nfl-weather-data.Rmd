@@ -1,0 +1,21 @@
+---
+title: Gathering Historical NFL Weather Data
+author: Jake Waddle
+date: '2020-09-28'
+slug: gathering-historical-nfl-weather-data
+categories:
+  - R
+tags:
+  - NFL
+  - Weather
+  - Fantasy
+description: ''
+topics: []
+---
+
+# Introduction
+
+
+```{r}
+
+```

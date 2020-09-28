@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Jake Waddle&#39;s Sports Data Blog</title>
-    <link>/post/</link>
-    <description>Recent content in Posts on Jake Waddle&#39;s Sports Data Blog</description>
+    <title>Fantasy on Jake Waddle&#39;s Sports Data Blog</title>
+    <link>/tags/fantasy/</link>
+    <description>Recent content in Fantasy on Jake Waddle&#39;s Sports Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/fantasy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gathering Historical NFL Weather Data</title>
       <link>/post/gathering-historical-nfl-weather-data/</link>
