@@ -15,6 +15,9 @@ topics: []
 
 # Introduction
 
+There's just something about early fall that feels right. Step outside and the weather just feels like football. The flavor of Autumn we experience is obviously influenced by geographic region. It's simple physics. I'm not sure if someone in Los Angeles can sense when football is near the same way someone in Arkansas can. All that to say, NFL games are played in most weather conditions imaginable as well as indoors. As someone who plays a fair amount of fantasy football, weather is one of the factors to consider when finalizing on a roster.
+
+This post will review one way to obtain weather data for NFL games. 
 
 ```{r}
 
