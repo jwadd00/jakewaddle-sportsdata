@@ -13,12 +13,69 @@ description: ''
 topics: []
 ---
 
-# Introduction
+# Warmish Welcome
 
-There's just something about early fall that feels right. Step outside and the weather just feels like football. The flavor of Autumn we experience is obviously influenced by geographic region. It's simple physics. I'm not sure if someone in Los Angeles can sense when football is near the same way someone in Arkansas can. All that to say, NFL games are played in most weather conditions imaginable as well as indoors. As someone who plays a fair amount of fantasy football, weather is one of the factors to consider when finalizing on a roster.
+Fantasy sports are a passion of mine because they reside at the intersection of two of my favorite things in the world: sports and data. Over the last 4 or so years, I have built data sets suitable for modeling fantasy football and basketball outcomes. I tend to favor daily fantasy, but weather data is valuable for season long fantasy football as well.  
 
-This post will review one way to obtain weather data for NFL games. 
+In fantasy football, weather data are valuable for a variety of reasons. Conventional wisdom states temperature, wind, and precipation will affect throwing the football, the kicking game, holding on to the football, etc. After reading through this post, you will have the necessary data to explore these claims. 
 
-```{r}
+## Setting Up
 
+To start, we'll load the necessary libraries. From there, we'll find a website with weather data, write a function to scrape the data and then run that function on several web pages automatically to build a complete historical data set. 
+
+The website we will be using is [NFL Weather](http://nflweather.com/). Like most real-world exercises, the data is not presented to us in a perfectly built table. We'll need to do a fair amount of data wrangling to mold the data into a useable structure. 
+
+
+```{r Setting Up, message = FALSE, warning = FALSE}
+# package management
+library(tidyverse)
+library(rvest)
+library(janitor)
+```
+
+
+# Exploring NFLWeather.com
+
+Once you navigate to [NFL Weather](http://nflweather.com/), you can see the weeks indexed with small blue boxes towards the top, directly in the middle of the page. Clicking on the '1' takes you to the weather for week 1 of the 2020 season. Notice the url for this page: http://nflweather.com/en/week/2020/week-1/. Simply replace '2020' in the url with '2019' will direct you to the week 1 forecast for the 2019 season. As you might have guessed, swapping 'week-1' with 'week-8' will launch the forecast for week 8. Already, we can see that the forecast for each week of a given season can be accessed programmatically simply by toggling a couple of paramters in the url (which we will do later on).
+
+Let's start with accessing the weather data for week 1 of the 2020 season. Using rvest, we can quickly scan the html for tables and parse appropriately using the `read_html()` and `html_table()` functions. These commands parse the html from the url given and return the tables in a list. Using `glimpse()`, we see that a list of 1 data frame that has some blank rows and null columns is returned. Sure, the data is a bit messy, but how slick is it that you can fetch data from a web page by simply using two commands from the `rvest` package.
+
+
+```{r Single Page Scrape, message = FALSE, warning = FALSE}
+url <- 'http://nflweather.com/en/week/2020/week-1/'
+
+url %>% 
+  read_html() %>% 
+  html_table() %>%
+  glimpse()
+```
+
+
+## Data Wrangling
+
+We've returned the data frame we want, but definitely not the data frame we need. The initial output requires additional work. 
+
+We'll use `clean_names()` from the `janitor` package to give each column a nice, clean name.
+
+
+```{r Single Page Data Wrangle 01, message = FALSE, warning = FALSE}
+url %>% 
+  read_html() %>% 
+  html_table() %>%
+  .[[1]] %>%  # select the first and only element in the list 
+  clean_names() %>%
+  glimpse()
+```
+
+
+From there, we'll select both home and away teams, the forecast, and the wind. The forecast field holds a description of the weather from which we can parse the temperature and precipiation out of. 
+
+
+```{r Single Page Data Wrangle 02, message = FALSE, warning = FALSE}
+url %>% 
+  read_html() %>% 
+  html_table() %>%
+  .[[1]] %>% 
+  clean_names() %>%
+  select(away, home, forecast, wind)
 ```
