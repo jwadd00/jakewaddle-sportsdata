@@ -36,9 +36,9 @@ library(janitor)
 
 # Exploring NFLWeather.com
 
-Once you navigate to [NFL Weather](http://nflweather.com/), you can see the weeks indexed with small blue boxes towards the top, directly in the middle of the page. Clicking on the '1' takes you to the weather for week 1 of the 2020 season. Notice the url for this page: http://nflweather.com/en/week/2020/week-1/. Simply replace '2020' in the url with '2019' will direct you to the week 1 forecast for the 2019 season. As you might have guessed, swapping 'week-1' with 'week-8' will launch the forecast for week 8. Already, we can see that the forecast for each week of a given season can be accessed programmatically simply by toggling a couple of paramters in the url (which we will do later on).
+Once you navigate to [NFL Weather](http://nflweather.com/), you can see the weeks indexed with small blue boxes towards the top, directly in the middle of the page. Clicking on the '1' takes you to the weather for week 1 of the 2020 season. Notice the url for this page: http://nflweather.com/en/week/2020/week-1/. Simply replace '2020' in the url with '2019' will direct you to the week 1 forecast for the 2019 season. As you might have guessed, swapping 'week-1' with 'week-8' will launch the forecast for week 8. Already, we can see that the forecast for each week of a given season can be accessed by switching the year and week parts of the url.
 
-Let's start with accessing the weather data for week 1 of the 2020 season. Using rvest, we can quickly scan the html for tables and parse appropriately using the `read_html()` and `html_table()` functions. These commands parse the html from the url given and return the tables in a list. Using `glimpse()`, we see that a list of 1 data frame that has some blank rows and null columns is returned. Sure, the data is a bit messy, but how slick is it that you can fetch data from a web page by simply using two commands from the `rvest` package.
+Let's start with accessing the weather data for week 1 of the 2020 season. Using rvest, we can quickly scan the html for tables and parse appropriately using the `read_html()` and `html_table()` functions. These commands parse the html from the url given and return the tables in a list. Using `glimpse()`, we see that a list of 1 data frame that has some blank rows and null columns is returned.
 
 
 ```{r Single Page Scrape, message = FALSE, warning = FALSE}
@@ -68,7 +68,7 @@ url %>%
 ```
 
 
-From there, we'll select both home and away teams, the forecast, and the wind. The forecast field holds a description of the weather from which we can parse the temperature and precipiation out of. 
+From there, we'll select both home and away team columns, the forecast column, and the wind column. The forecast field holds a text description of the weather from which we can parse the temperature and precipiation out of. 
 
 
 ```{r Single Page Data Wrangle 02, message = FALSE, warning = FALSE}
@@ -77,5 +77,25 @@ url %>%
   html_table() %>%
   .[[1]] %>% 
   clean_names() %>%
-  select(away, home, forecast, wind)
+  select(away, home, forecast, wind) %>% 
+  glimpse()
+```
+
+
+## String Olympics
+
+Since the season and week fields are not included in the data, we need to extract them from the url. Remembering back to when we changed the '2020' in the url to '2019', we know that the position of the season portion of the url will not change. Using `stringr` and `str_sub`, we're able to extract characters based on their position within the url - in this case characters 31-34. 
+
+Extracting the week out of the url is a little more complex. To start, we use regular expressions to extract all characters of the url following the '-'. Using `sub()`, we actually pattern match all characters prior to and including the '-' and replace with '' (nothing). This leaves us with `1/`. From here, we just need to capture the number to serve as our week column. Here, I go back to `str_sub` and extract the characters from the right beginning with 3 characters from the right and ending with 2 characters from the right which will capture double digit weeks as well. 
+
+
+```{r String Olympics, message = FALSE, waring = FALSE}
+url %>% 
+  read_html() %>% 
+  html_table() %>%
+  .[[1]] %>% 
+  clean_names() %>%
+  select(away, home, forecast, wind) %>%
+  mutate(season = str_sub(url, start= 31, end = 34),
+         week = str_sub(sub('.*\\-', '', url), start = -3, end = -2))
 ```
