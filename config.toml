@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "Jake Waddle's Sports Data Blog"
+title = "Jake Waddle's Data Blog"
 theme = "blackburn"
 author = "Jake Waddle"
 #copyright = "&copy; 2016. All rights reserved."
@@ -51,9 +51,5 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [social]
   # Link your social networking accouns to the side menu
   # by entering your username or ID.
-  twitter = "*"
-  facebook = "*"
-  instagram = "*"
   github = "jwadd00"
-  stackoverflow = "*"
-  linkedin = "*"
+  linkedin = "jake-waddle-88550565"
