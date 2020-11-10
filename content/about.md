@@ -5,27 +5,15 @@ sidemenu: "true"
 title: Me
 ---
 
-Hello - thanks for visiting this 
 
+# What is this?
 
-It makes use of a variety of open source projects including:
+I've put off organizing `rmarkdown` documents into a blog for far too long. Initially, the objective for this repository of blurbs is to publish tutorials, exploratory analyses, and statistical modeling exercises. More often than not, the data used will be sports or stock market related. I created this blog using the `blogdown` package. 
 
-* [Cobra](https://github.com/spf13/cobra)
-* [Viper](https://github.com/spf13/viper)
-* [J Walter Weatherman](https://github.com/spf13/jWalterWeatherman)
-* [Cast](https://github.com/spf13/cast)
+# A little about me, I guess
 
-Learn more and contribute on [GitHub](https://github.com/spf13).
+Hi, my name is Jake Waddle. I live in Fort Smith, Arkansas with my wife and two little golden nuggets of joy. Joshua is our little boy, and Emma is our (big) girl. 
 
-## Setup
+Out of school, I worked near Fort Smith for a company that attempted to disrupt the ceramic proppant game in the oil and gas sector. I started by cleaning and running equipment in the manufacturing plant but quickly moved into our quality control lab. When we began trialing our product in the field, I spent the better part of 2 years flying out to Midland, Texas where we did real-time quality tests on-site. Eventually I moved on to Chesapeake Energy where I spent nearly 7 years in Oklahoma City at the corporate campus. In July of 2019, we were blessed to be able to move our family back home to Fort Smith where I took a job at Firebend where I am currently employed as a data scientist.
 
-Some fun facts about [Hugo](http://gohugo.io/):
-
-* Built in [Go](http://golang.org/)
-* Loosely inspired by [Jekyll](http://jekyllrb.com/)
-* Primarily developed by [spf13](http://spf13.com/) on the train while commuting to and from Manhattan.
-* Coded in [Vim](http://vim.org) using [spf13-vim](http://vim.spf13.com/)
-
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/spf13/hugo/issues/new) or [ask me on Twitter](https://twitter.com/spf13).
-
-Thanks for reading!
+I have been learning and doing data science since 2016. I was fortunate enough to be given the opportunity to learn and practice on the fly at Chesapeake Energy - but also invested a lot of my own time developing models for fantasy football and fantasy basketball. 

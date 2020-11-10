@@ -13,11 +13,8 @@
       <pubDate>Mon, 09 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>Hello - thanks for visiting this
-It makes use of a variety of open source projects including:
- Cobra Viper J Walter Weatherman Cast  Learn more and contribute on GitHub.
-Setup Some fun facts about Hugo:
- Built in Go Loosely inspired by Jekyll Primarily developed by spf13 on the train while commuting to and from Manhattan. Coded in Vim using spf13-vim  Have questions or suggestions? Feel free to open an issue on GitHub or ask me on Twitter.</description>
+      <description>What is this? I&amp;rsquo;ve put off organizing rmarkdown documents into a blog for far too long. Initially, the objective for this repository of blurbs is to publish tutorials, exploratory analyses, and statistical modeling exercises. More often than not, the data used will be sports or stock market related. I created this blog using the blogdown package.
+A little about me, I guess Hi, my name is Jake Waddle. I live in Fort Smith, Arkansas with my wife and two little golden nuggets of joy.</description>
     </item>
     
     <item>
