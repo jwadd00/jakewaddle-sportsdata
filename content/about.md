@@ -1,11 +1,11 @@
 ---
-date: "2014-04-09"
-description: About me and this site
+date: "2020-11-09"
+description: About
 sidemenu: "true"
-title: About
+title: Me
 ---
 
-Hugo is a static site engine written in Go.
+Hello - thanks for visiting this 
 
 
 It makes use of a variety of open source projects including:
