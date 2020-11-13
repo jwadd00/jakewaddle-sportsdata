@@ -82,14 +82,14 @@ url %>%
 ```
 
 
-## String Olympics
+## Text Gymnastics
 
 Since the season and week fields are not included in the data, we need to extract them from the url. Remembering back to when we changed the '2020' in the url to '2019', we know that the position of the season portion of the url will not change. Using `stringr` and `str_sub`, we're able to extract characters based on their position within the url - in this case characters 31-34. 
 
 Extracting the week out of the url is a little more complex. To start, we use regular expressions to extract all characters of the url following the '-'. Using `sub()`, we actually pattern match all characters prior to and including the '-' and replace with '' (nothing). This leaves us with `1/`. From here, we just need to capture the number to serve as our week column. Here, I go back to `str_sub` and extract the characters from the right beginning with 3 characters from the right and ending with 2 characters from the right which will capture double digit weeks as well. 
 
 
-```{r String Olympics, message = FALSE, waring = FALSE}
+```{r String Olympics, message = FALSE, warning = FALSE}
 url %>% 
   read_html() %>% 
   html_table() %>%
@@ -97,5 +97,25 @@ url %>%
   clean_names() %>%
   select(away, home, forecast, wind) %>%
   mutate(season = str_sub(url, start= 31, end = 34),
-         week = str_sub(sub('.*\\-', '', url), start = -3, end = -2))
+         week = str_sub(sub('.*\\-', '', url), start = -3, end = -2)) %>% 
+  glimpse()
+```
+
+
+For capturing the wind, we'll simply extract all characters prior to the lower case 'm' in the wind column. This will give us the numerical representation of the wind. Similarly, for temperature we can use the same regular expression to extract all characters prior to the lower case 'f' in the forecast column.  
+
+
+```{r Extract Weather, message = FALSE, warning = FALSE}
+url %>% 
+  read_html() %>% 
+  html_table() %>%
+  .[[1]] %>% 
+  clean_names() %>%
+  select(away, home, forecast, wind) %>%
+  mutate(season = str_sub(url, start= 31, end = 34),
+         week = str_sub(sub('.*\\-', '', url), start = -3, end = -2),
+         wind = as.numeric(gsub( "m.*$", "",wind)),
+         temperature = ifelse(forecast == 'DOME', 71, gsub( "f.*$", "", forecast)),
+         weather = sub(".*? (.+)", "\\1", forecast)) %>%
+  glimpse()
 ```
