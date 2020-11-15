@@ -102,7 +102,7 @@ url %>%
 ```
 
 
-For capturing the wind, we'll simply extract all characters prior to the lower case 'm' in the wind column. This will give us the numerical representation of the wind. Similarly, for temperature we can use the same regular expression to extract all characters prior to the lower case 'f' in the forecast column.  
+For capturing the wind, we'll simply extract all characters prior to the lower case 'm' in the wind column. This will give us the numerical representation of the wind. Similarly, for temperature we can use the same regular expression to extract all characters prior to the lower case 'f' in the forecast column.
 
 
 ```{r Extract Weather, message = FALSE, warning = FALSE}
@@ -113,9 +113,9 @@ url %>%
   clean_names() %>%
   select(away, home, forecast, wind) %>%
   mutate(season = str_sub(url, start= 31, end = 34),
-         week = str_sub(sub('.*\\-', '', url), start = -3, end = -2),
+         week = str_sub(gsub('.*\\-', '', url), start = -3, end = -2),
          wind = as.numeric(gsub( "m.*$", "",wind)),
          temperature = ifelse(forecast == 'DOME', 71, gsub( "f.*$", "", forecast)),
-         weather = sub(".*? (.+)", "\\1", forecast)) %>%
+         weather = gsub(".*? ", "", forecast)) %>%
   glimpse()
 ```

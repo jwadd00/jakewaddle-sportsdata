@@ -124,10 +124,10 @@ url %&gt;%
   clean_names() %&gt;%
   select(away, home, forecast, wind) %&gt;%
   mutate(season = str_sub(url, start= 31, end = 34),
-         week = str_sub(sub(&#39;.*\\-&#39;, &#39;&#39;, url), start = -3, end = -2),
+         week = str_sub(gsub(&#39;.*\\-&#39;, &#39;&#39;, url), start = -3, end = -2),
          wind = as.numeric(gsub( &quot;m.*$&quot;, &quot;&quot;,wind)),
          temperature = ifelse(forecast == &#39;DOME&#39;, 71, gsub( &quot;f.*$&quot;, &quot;&quot;, forecast)),
-         weather = sub(&quot;.*? (.+)&quot;, &quot;\\1&quot;, forecast)) %&gt;%
+         weather = gsub(&quot;.*? &quot;, &quot;&quot;, forecast)) %&gt;%
   glimpse()</code></pre>
 <pre><code>## Rows: 16
 ## Columns: 8
@@ -138,6 +138,6 @@ url %&gt;%
 ## $ season      &lt;chr&gt; &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;,...
 ## $ week        &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, ...
 ## $ temperature &lt;chr&gt; &quot;58&quot;, &quot;76&quot;, &quot;73&quot;, &quot;71&quot;, &quot;86&quot;, &quot;71&quot;, &quot;79&quot;, &quot;65&quot;, &quot;75&quot;, &quot;...
-## $ weather     &lt;chr&gt; &quot;Overcast&quot;, &quot;Partly Cloudy&quot;, &quot;Clear&quot;, &quot;DOME&quot;, &quot;Humid an...</code></pre>
+## $ weather     &lt;chr&gt; &quot;Overcast&quot;, &quot;Cloudy&quot;, &quot;Clear&quot;, &quot;DOME&quot;, &quot;Cloudy&quot;, &quot;DOME&quot;...</code></pre>
 </div>
 </div>
