@@ -260,7 +260,8 @@
 <pre class="r"><code># package management
 library(tidyverse)
 library(rvest)
-library(janitor)</code></pre>
+library(janitor)
+library(glue)</code></pre>
 </div>
 </div>
 <div id="exploring-nflweather.com" class="section level1">
@@ -339,7 +340,7 @@ url %&gt;%
   clean_names() %&gt;%
   select(away, home, forecast, wind) %&gt;%
   mutate(season = str_sub(url, start= 31, end = 34),
-         week = str_sub(sub(&#39;.*\\-&#39;, &#39;&#39;, url), start = -3, end = -2)) %&gt;% 
+         week = str_sub(gsub(&#39;.*\\-&#39;, &#39;&#39;, url), start = -3, end = -2)) %&gt;% 
   glimpse()</code></pre>
 <pre><code>## Rows: 16
 ## Columns: 6
@@ -373,6 +374,105 @@ url %&gt;%
 ## $ temperature &lt;chr&gt; &quot;58&quot;, &quot;76&quot;, &quot;73&quot;, &quot;71&quot;, &quot;86&quot;, &quot;71&quot;, &quot;79&quot;, &quot;65&quot;, &quot;75&quot;, &quot;...
 ## $ weather     &lt;chr&gt; &quot;Overcast&quot;, &quot;Cloudy&quot;, &quot;Clear&quot;, &quot;DOME&quot;, &quot;Cloudy&quot;, &quot;DOME&quot;...</code></pre>
 </div>
+<div id="pivot-action" class="section level2">
+<h2>Pivot Action</h2>
+<p>At this point, the data is tidy’d enough to start using. However, before we move on to writing a function to scrape the data for us across multiple web pages at a time, we need to alter the orientation of the data. As is, there is a row for each game. Thinking bigger picture, we will want a row for each team - so that each row is unique for season, week, and team. Suppose you want to join or merge this weather data with a team’s box score data from one or multiple games? This final transformation will make that task much easier.</p>
+<p>With the <code>pivot_longer()</code> function, we can elongate the data using the home and away columns - renaming the pivoted values column simply to ‘team’. For example, if the Texans and Chiefs played, this function ensures there is a row for each team along with the corresponding weather data from the remaining columns. What you’ll notice is that instead of 16 rows like the previous outputs, there will now be 32 (1 for each team instead of 1 for each game). The result is a clean dataset with a row for each season, week, team.</p>
+<pre class="r"><code>url %&gt;% 
+  read_html() %&gt;% 
+  html_table() %&gt;%
+  .[[1]] %&gt;% 
+  clean_names() %&gt;%
+  select(away, home, forecast, wind) %&gt;%
+  mutate(season = str_sub(url, start= 31, end = 34),
+         week = str_sub(gsub(&#39;.*\\-&#39;, &#39;&#39;, url), start = -3, end = -2),
+         wind = as.numeric(gsub( &quot;m.*$&quot;, &quot;&quot;,wind)),
+         temperature = ifelse(forecast == &#39;DOME&#39;, 71, gsub( &quot;f.*$&quot;, &quot;&quot;, forecast)),
+         weather = gsub(&quot;.*? &quot;, &quot;&quot;, forecast)) %&gt;%
+  pivot_longer(cols = c(&#39;away&#39;, &#39;home&#39;), values_to = &#39;team&#39;) %&gt;% 
+  select(-name, -forecast) %&gt;% 
+  select(team, season, week, temperature, wind, weather) %&gt;% 
+  glimpse()</code></pre>
+<pre><code>## Rows: 32
+## Columns: 6
+## $ team        &lt;chr&gt; &quot;Texans&quot;, &quot;Chiefs&quot;, &quot;Eagles&quot;, &quot;Redskins&quot;, &quot;Dolphins&quot;, &quot;...
+## $ season      &lt;chr&gt; &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;, &quot;2020&quot;,...
+## $ week        &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, ...
+## $ temperature &lt;chr&gt; &quot;58&quot;, &quot;58&quot;, &quot;76&quot;, &quot;76&quot;, &quot;73&quot;, &quot;73&quot;, &quot;71&quot;, &quot;71&quot;, &quot;86&quot;, &quot;...
+## $ wind        &lt;dbl&gt; 6, 6, 4, 4, 6, 6, 2, 2, 8, 8, 11, 11, 3, 3, 12, 12, 5, ...
+## $ weather     &lt;chr&gt; &quot;Overcast&quot;, &quot;Overcast&quot;, &quot;Cloudy&quot;, &quot;Cloudy&quot;, &quot;Clear&quot;, &quot;C...</code></pre>
+</div>
+</div>
+<div id="mapping-the-function" class="section level1">
+<h1>Mapping the Function</h1>
+<p>The final objective here is to use this code as a function. Functions can be used over and over without rewriting code. In this example, we can use and reuse our code for existing urls, grabbing data from a particular week of a particular season - or we can run for all weeks from multiple seasons. For this blog post, we’re going to grab weather data for weeks 1 through 17 from 2018 and 2019.</p>
+<p>We actually need two functions. One for generating the web page urls and another for scraping / wrangling the data. For generating the urls, we establish the sequence of weeks and years. Then, with the help of <code>tidyr</code> and the <code>crossing()</code> function, we can generate all combinations of weeks and years. The result is a tibble with two columns containing a row for weeks 1-17 for each season 2018 and 2019. The function that generates the urls simply concatenates the base url with the year and week provided. Using <code>pmap</code>, we can iterate over each row of the <code>weather_weeks_and_years</code> tibble, passing the year and week from each row into our <code>generate_urls</code> function. The result is a list of 85 urls or web pages that we can now scrape data from.</p>
+<pre class="r"><code># set up weeks and years
+weeks &lt;- c(1:17)
+years &lt;- c(2018:2019)
+weather_weeks_and_years &lt;- crossing(year = years, week = weeks) # generate all unique combinations
+
+# function to generate urls
+generate_urls &lt;- function(year, week) {
+  full_url &lt;- glue::glue(&quot;http://nflweather.com/en/week/{year}/week-{week}/&quot;)
+}
+
+# pass weeks and years through function
+url_list &lt;- pmap(weather_weeks_and_years, generate_urls)
+
+head(url_list)</code></pre>
+<pre><code>## [[1]]
+## http://nflweather.com/en/week/2018/week-1/
+## 
+## [[2]]
+## http://nflweather.com/en/week/2018/week-2/
+## 
+## [[3]]
+## http://nflweather.com/en/week/2018/week-3/
+## 
+## [[4]]
+## http://nflweather.com/en/week/2018/week-4/
+## 
+## [[5]]
+## http://nflweather.com/en/week/2018/week-5/
+## 
+## [[6]]
+## http://nflweather.com/en/week/2018/week-6/</code></pre>
+<p>Below, we create a function that accepts a url, scrapes, wrangles, and returns the data. The code is the same code written above, used repeatedly for each url. We execute the function for each url within <code>url_list</code> by using <code>map_df</code> from the <code>purrr</code> package. <code>map_df</code> accepts an input list and applies a function to each element while returning a data frame. It might take a minute or two to run. Upon completion, you should have a solid weather dataset to start digging into.</p>
+<pre class="r"><code># function to scrape weather
+scrape_weather_data &lt;- function(webpage_url) {
+  webpage_url %&gt;% 
+    read_html() %&gt;% 
+    html_table() %&gt;%
+    .[[1]] %&gt;% 
+    clean_names() %&gt;%
+    select(away, home, forecast, wind) %&gt;%
+    mutate(season = str_sub(webpage_url, start= 31, end = 34),
+           week = str_sub(gsub(&#39;.*\\-&#39;, &#39;&#39;, webpage_url), start = -3, end = -2),
+           wind = as.numeric(gsub( &quot;m.*$&quot;, &quot;&quot;,wind)),
+           temperature = ifelse(forecast == &#39;DOME&#39;, 71, gsub( &quot;f.*$&quot;, &quot;&quot;, forecast)),
+           weather = gsub(&quot;.*? &quot;, &quot;&quot;, forecast)) %&gt;%
+    pivot_longer(cols = c(&#39;away&#39;, &#39;home&#39;), values_to = &#39;team&#39;) %&gt;% 
+    select(-name, -forecast) %&gt;% 
+    select(team, season, week, temperature, wind, weather)
+}
+
+# pass urls through the function
+weather_data &lt;- map_df(url_list, scrape_weather_data)
+
+glimpse(weather_data)</code></pre>
+<pre><code>## Rows: 1,024
+## Columns: 6
+## $ team        &lt;chr&gt; &quot;Falcons&quot;, &quot;Eagles&quot;, &quot;Bills&quot;, &quot;Ravens&quot;, &quot;Jaguars&quot;, &quot;Gia...
+## $ season      &lt;chr&gt; &quot;2018&quot;, &quot;2018&quot;, &quot;2018&quot;, &quot;2018&quot;, &quot;2018&quot;, &quot;2018&quot;, &quot;2018&quot;,...
+## $ week        &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, ...
+## $ temperature &lt;chr&gt; &quot;81&quot;, &quot;81&quot;, &quot;62&quot;, &quot;62&quot;, &quot;58&quot;, &quot;58&quot;, &quot;71&quot;, &quot;71&quot;, &quot;62&quot;, &quot;...
+## $ wind        &lt;dbl&gt; 2, 2, 11, 11, 4, 4, 1, 1, 6, 6, 9, 9, 4, 4, 9, 9, 4, 4,...
+## $ weather     &lt;chr&gt; &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;DOME&quot;,...</code></pre>
+</div>
+<div id="finally" class="section level1">
+<h1>Finally</h1>
+<p>That was a lot. From regular expressions, to creating functions, and using <code>purrr</code> - there were quite a few different tasks described in this post. In the wild, most data are messy and need to be gathered / cleaned using a wide variety of tricks and trades. Good bye.</p>
 </div>
 
   
