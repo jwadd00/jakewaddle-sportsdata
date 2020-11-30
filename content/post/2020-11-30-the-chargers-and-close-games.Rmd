@@ -1,0 +1,59 @@
+---
+title: The Chargers and Close Games
+author: Jake Waddle
+date: '2020-11-30'
+slug: the-chargers-and-close-games
+categories:
+  - R
+  - Python
+tags:
+  - NFL
+  - Chargers
+description: ''
+topics: []
+---
+
+# Los Angeles Chargers Fandom
+
+I have been a Chargers fan for 20 years. Now that that's out of the way can you think of a team, during the last few years, that has blown leads or made near-comebacks at the rate that this franchise has? It seems as if every other game winds up dwindling down to one possession. It's been written about with some frequency that this team finds a way to grind out a close loss. But how does their close game frequency stack up against the rest of the league? Do the Chargers lose their close games at a wildly higher rate? Below, we will mix up some R and Python and try to find out. 
+
+
+# Get Ready
+
+I typically rely on R to do everything, but this post will use a fair amount of Python. If you would like to follow along, you'll need to be prepared to use Python and should consider a consult with the `reticulate` documentation.
+
+
+```{r Hidden Setups for Website, include = FALSE, warning = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+```
+```{r Set Up, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(reticulate)
+library(rvest)
+library(janitor)
+
+# force python chunks to use anaconda install
+use_condaenv("anaconda3", required = TRUE)
+```
+
+
+# Finding a Game Log
+
+In order to compare close game rates between NFL teams, we'll need to find a source for historical scores. [Pro Football Reference]('https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html') looks to contain the information we need. Inspecting the HTML in a browser, you can see the table class id is "gamelog2020". With the `rvest` package, we can parse the html and search xpaths for "//*[@id="gamelog2020"]". We'll rely on the `html_table()` function to return a list of child tables (which should result in 1 table). 
+
+```{r, message = FALSE, warning = FALSE}
+url <- 'https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html'
+
+url %>% 
+  read_html() %>% 
+  html_nodes(xpath = '//*[@id="gamelog2020"]') %>%
+  html_table() %>% 
+  .[[1]] %>% 
+  clean_names() %>% 
+  glimpse()
+```
+
+
+## Data Wrangle
+
