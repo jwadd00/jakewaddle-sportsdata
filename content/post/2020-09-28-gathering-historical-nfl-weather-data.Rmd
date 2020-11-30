@@ -25,7 +25,10 @@ To start, we'll load the necessary libraries. From there, we'll find a website w
 
 The website we will be using is [NFL Weather](http://nflweather.com/). Like most real-world exercises, the data is not presented to us in a perfectly built table. We'll need to do a fair amount of data wrangling to mold the data into a useable structure. 
 
-
+```{r Hidden Setups for Website, include = FALSE, warning = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+```
 ```{r Setting Up, message = FALSE, warning = FALSE}
 # package management
 library(tidyverse)
@@ -65,7 +68,8 @@ url %>%
   html_table() %>%
   .[[1]] %>%  # select the first and only element in the list 
   clean_names() %>%
-  glimpse()
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
@@ -79,7 +83,8 @@ url %>%
   .[[1]] %>% 
   clean_names() %>%
   select(away, home, forecast, wind) %>% 
-  glimpse()
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
@@ -99,7 +104,8 @@ url %>%
   select(away, home, forecast, wind) %>%
   mutate(season = str_sub(url, start= 31, end = 34),
          week = str_sub(gsub('.*\\-', '', url), start = -3, end = -2)) %>% 
-  glimpse()
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
@@ -118,7 +124,8 @@ url %>%
          wind = as.numeric(gsub( "m.*$", "",wind)),
          temperature = ifelse(forecast == 'DOME', 71, gsub( "f.*$", "", forecast)),
          weather = gsub(".*? ", "", forecast)) %>%
-  glimpse()
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
@@ -144,7 +151,8 @@ url %>%
   pivot_longer(cols = c('away', 'home'), values_to = 'team') %>% 
   select(-name, -forecast) %>% 
   select(team, season, week, temperature, wind, weather) %>% 
-  glimpse()
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
@@ -198,7 +206,9 @@ scrape_weather_data <- function(webpage_url) {
 # pass urls through the function
 weather_data <- map_df(url_list, scrape_weather_data)
 
-glimpse(weather_data)
+weather_data %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
 
 
