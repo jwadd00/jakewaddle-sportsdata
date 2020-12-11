@@ -13,14 +13,17 @@ description: ''
 topics: []
 ---
 
-# Los Angeles Chargers Fandom
+# A Good Way to Lose
 
-I have been a Chargers fan for 20 years. Now that that's out of the way can you think of a team, during the last few years, that has blown leads or made near-comebacks at the rate that this franchise has? It seems as if every other game winds up dwindling down to one possession. It's been written about with some frequency that this team finds a way to grind out a close loss. But how does their close game frequency stack up against the rest of the league? Do the Chargers lose their close games at a wildly higher rate? Below, we will mix up some R and Python and try to find out. 
+As a Chargers fan for 20+ years, the last 5ish years have been interesting to say the least. In some ways it has been comical watching coach after coach lead Philip Rivers to an endless line of close defeats. It's funny to blame the quarterback, but since 2015 Rivers is second only to Matt Ryan in passing yards. The failure modes transcend beyond quarterback play. The on-field buffoonery has been written about plenty. [Click here for a comprehensive review.](https://www.theringer.com/nfl/2019/12/4/20995317/chargers-losses-one-score-game-missed-kicks-pass-interference) I am curious to see if other teams experience close contests and if they similarly suck. Below we will examine close game frequency and win percentage across the NFL to see how the Chargers stack up against the rest of the league.
+
+
+<img alt = 'Legend' width='200' src='/post/2020-11-30-the-chargers-and-close-games_files/p-rivers.jpg' />
 
 
 # Get Ready
 
-I typically rely on R to do everything, but this post will use a fair amount of Python. If you would like to follow along, you'll need to be prepared to use Python and should consider a consult with the `reticulate` documentation.
+While R is my native tongue, this post contains some python. If you would like to follow along, you'll need to be prepared to use Python and should consider a consult with the `reticulate` documentation.
 
 
 ```{r Hidden Setups for Website, include = FALSE, warning = FALSE, message = FALSE}
@@ -32,8 +35,9 @@ library(tidyverse)
 library(reticulate)
 library(rvest)
 library(janitor)
+library(glue)
 
-# force python chunks to use anaconda install
+# i use this to force python chunks to use anaconda distro
 use_condaenv("anaconda3", required = TRUE)
 ```
 
@@ -42,6 +46,7 @@ use_condaenv("anaconda3", required = TRUE)
 
 In order to compare close game rates between NFL teams, we'll need to find a source for historical scores. [Pro Football Reference]('https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html') looks to contain the information we need. Inspecting the HTML in a browser, you can see the table class id is "gamelog2020". With the `rvest` package, we can parse the html and search xpaths for "//*[@id="gamelog2020"]". We'll rely on the `html_table()` function to return a list of child tables (which should result in 1 table). 
 
+
 ```{r, message = FALSE, warning = FALSE}
 url <- 'https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html'
 
@@ -49,7 +54,7 @@ url %>%
   read_html() %>% 
   html_nodes(xpath = '//*[@id="gamelog2020"]') %>%
   html_table() %>% 
-  .[[1]] %>% 
+  .[[1]] %>%  # when result is list of 1 dataframe, we can extract this way
   clean_names() %>% 
   glimpse()
 ```
@@ -57,3 +62,135 @@ url %>%
 
 ## Data Wrangle
 
+This is a good start, but we need to clean the data. The first row contains the column headers and there are quite a few columns that are not needed to compare final scores. We'll remove the first row with `slice()`, add a column to distinguish the season and clean up the column names with `dplyr`. 
+
+```{r, message = FALSE, warning = FALSE}
+url %>% 
+  read_html() %>% 
+  html_nodes(xpath = '//*[@id="gamelog2020"]') %>%
+  html_table() %>% 
+  .[[1]] %>% # when result is list of 1 dataframe, we can extract this way
+  clean_names() %>% 
+  slice(-1) %>% # remove first row 
+  mutate(season = '2020') %>%
+  select(season, x, x_8, score, score_2) %>% 
+  rename(week = x,
+         opp = x_8,
+         team_score = score,
+         opp_score = score_2) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
+```
+
+
+# Retrieving Multiple Seasons 
+
+It's nice having one season's worth of scores, but we are trying to acquire scores since 2015. Below we turn the code above into a function. Using the `glue` package, we'll simply set up our code to accept a 'year' parameter. The additional data wrangling steps are for using the 'year' input as a column to distinguish the season as well as extracting the team slug in the url for generating a 'team' column. Using `purrr`, we can map our function to the input list of seasons. The result is a nice, clean data frame. 
+
+
+```{r, message = FALSE, warning = FALSE}
+scrape_pfr_team_game_logs <- function(year) {
+  url <- glue::glue('https://www.pro-football-reference.com/teams/sdg/{year}/gamelog.html')
+  
+  url %>% 
+  read_html() %>% 
+  html_nodes(xpath = glue::glue('//*[@id="gamelog{year}"]')) %>%
+  html_table() %>% 
+  .[[1]] %>% 
+  clean_names() %>% 
+  slice(-1) %>% 
+  mutate(season = as.character(year), # use year parameter to annotate season
+         team = substr(url, 46, 48)) %>% # use portion of url to label the team
+  select(season, x, team, x_8, score, score_2) %>% 
+  rename(week = x,
+         opp = x_8,
+         team_score = score,
+         opp_score = score_2)
+}
+
+years <- 2015:2020
+
+scores <- map_df(years, scrape_pfr_team_game_logs)
+
+scores %>%
+  sample_n(10) %>%  # picking 10 random rows to highlight
+  kable(format = 'html') %>% 
+  kable_styling()
+```
+
+
+# Retrieving Multiple Teams' Seasons
+
+In order to compare the Chargers against the rest of the league, we'll need game logs from all of the other teams. Usually I can use `rvest` and obtain whatever I need from the web, but here, I decided `BeautifulSoup` was a better fit. With this python library, it's a bit more intuitive to find explicit tags. The ability to string together super flexible `find` commands was extremely helpful for this particular website. 
+
+
+What we're trying to do here is find our base URLs for the other teams. Once you locate the class that houses all of the links, you can parse them with `regex`. We'll loop through the results and generate a list of base URLs as shown below.  
+
+
+```{python Find All Teams}
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import re
+
+html = urlopen("https://www.pro-football-reference.com/teams/")
+bsObj = BeautifulSoup(html)
+
+teamSlugs = bsObj.find("div", {"id":"all_teams_active"}).findAll("a", href = re.compile("^(/teams/)((?!:).)*$"))
+
+teamSlugList = []
+for ts in teamSlugs[0:]:
+  result = ts.attrs["href"]
+  teamSlugList.append(result)
+  
+print(teamSlugList)
+```
+
+
+## Another Function
+
+First on the agenda is transferring our python object over to R. Then we need to parse the slug. 
+
+
+```{r Parse Team Slugs from Python}
+team_slugs <- py$teamSlugList %>% # pass to R
+  map(~ substr(., 8, 10)) %>% # extract team slug
+  unlist()
+
+print(team_slugs[1:5])
+```
+
+
+Using `crossing()`, we'll generate all combinations of teams and years. Updating our function too allow for 'team' and 'year', this will give us two arguments for our scrape function. With `purrr`, `pmap()` accepts multiple arguments which supports our effort here. 
+
+
+```{r Function for Teams and Years, cache=TRUE}
+teams_and_years <- crossing(year = years, team = team_slugs) # all possible combinations
+
+# use glue to concat input w/ strings
+scrape_pfr_team_game_logs <- function(team, year) {
+  url <- glue::glue('https://www.pro-football-reference.com/teams/{team}/{year}/gamelog.html')
+  
+  url %>% 
+  read_html() %>% 
+  html_nodes(xpath = glue::glue('//*[@id="gamelog{year}"]')) %>%
+  html_table() %>% 
+  .[[1]] %>% 
+  clean_names() %>% 
+  slice(-1) %>% 
+  mutate(season = as.character(year),
+         team = substr(url, 46, 48)) %>% 
+  select(season, x, team, x_8, score, score_2) %>% 
+  rename(week = x,
+         opp = x_8,
+         team_score = score,
+         opp_score = score_2) %>%
+  filter(!is.na(team_score)) # unplayed games can be filtered out
+}
+
+all_scores <- pmap_df(teams_and_years, scrape_pfr_team_game_logs)
+
+all_scores %>% 
+  sample_n(15) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
+```

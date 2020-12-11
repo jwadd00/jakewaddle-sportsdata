@@ -207,6 +207,7 @@ scrape_weather_data <- function(webpage_url) {
 weather_data <- map_df(url_list, scrape_weather_data)
 
 weather_data %>% 
+  sample_n(10) %>% 
   kable(format = 'html') %>% 
   kable_styling()
 ```
