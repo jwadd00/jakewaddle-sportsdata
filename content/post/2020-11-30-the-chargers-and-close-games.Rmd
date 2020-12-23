@@ -15,11 +15,7 @@ topics: []
 
 # A Good Way to Lose
 
-As a Chargers fan for 20+ years, the last 5ish years have been interesting to say the least. In some ways it has been comical watching coach after coach lead Philip Rivers to an endless line of close defeats. It's funny to blame the quarterback, but since 2015 Rivers is second only to Matt Ryan in passing yards. The failure modes transcend beyond quarterback play. The on-field buffoonery has been written about plenty. [Click here for a comprehensive review.](https://www.theringer.com/nfl/2019/12/4/20995317/chargers-losses-one-score-game-missed-kicks-pass-interference) I am curious to see if other teams experience close contests and if they similarly suck. Below we will examine close game frequency and win percentage across the NFL to see how the Chargers stack up against the rest of the league.
-
-
-<img alt = 'Legend' width='200' src='/post/2020-11-30-the-chargers-and-close-games_files/p-rivers.jpg' />
-
+As a Chargers fan for 20+ years, the last 5ish years have been interesting to say the least. In some ways it has been comical watching coach after coach lead Philip Rivers to an endless line of close defeats. It's funny to blame the quarterback, but the failure modes transcend beyond quarterback play. The on-field buffoonery has been written about plenty. [Click here for a comprehensive review.](https://www.theringer.com/nfl/2019/12/4/20995317/chargers-losses-one-score-game-missed-kicks-pass-interference) I am curious to see if other teams experience close contests and if they similarly suck. Below we will examine close game frequency and win percentage across the NFL to see how the Chargers stack up against the rest of the league.
 
 # Get Ready
 
@@ -151,7 +147,7 @@ print(teamSlugList)
 First on the agenda is transferring our python object over to R. Then we need to parse the slug. 
 
 
-```{r Parse Team Slugs from Python}
+```{r Parse Team Slugs from Python, warning=FALSE, message=FALSE}
 team_slugs <- py$teamSlugList %>% # pass to R
   map(~ substr(., 8, 10)) %>% # extract team slug
   unlist()
@@ -160,10 +156,10 @@ print(team_slugs[1:5])
 ```
 
 
-Using `crossing()`, we'll generate all combinations of teams and years. Updating our function too allow for 'team' and 'year', this will give us two arguments for our scrape function. With `purrr`, `pmap()` accepts multiple arguments which supports our effort here. 
+Using `crossing()`, we'll generate all combinations of teams and years. Updating our function too allow for 'team' and 'year', this will give us two arguments for our scrape function. With `purrr`, `pmap()` accepts multiple arguments which supports our effort here. This will take a few minutes to run. 
 
 
-```{r Function for Teams and Years, cache=TRUE}
+```{r Function for Teams and Years, cache=TRUE, message = FALSE, warning = FALSE}
 teams_and_years <- crossing(year = years, team = team_slugs) # all possible combinations
 
 # use glue to concat input w/ strings
@@ -193,4 +189,21 @@ all_scores %>%
   sample_n(15) %>% 
   kable(format = 'html') %>% 
   kable_styling()
+```
+
+
+# Transform the Data
+
+Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging. 
+
+
+```{r transform, warning = FALSE, message = FALSE}
+transform <- all_scores %>%
+  mutate_at(vars(team_score, opp_score),
+            as.numeric) %>% 
+  mutate(score_difference = abs(team_score - opp_score),
+         within_a_score = case_when(score_difference <= 8 ~ 1,
+                                  TRUE ~ 0),
+         is_win = case_when(team_score > opp_score ~ 1,
+                            TRUE ~ 0))
 ```
