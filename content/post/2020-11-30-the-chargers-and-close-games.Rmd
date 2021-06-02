@@ -22,9 +22,10 @@ As a Chargers fan for 20+ years, the last 5ish years have been interesting to sa
 While R is my native tongue, this post contains some python. If you would like to follow along, you'll need to be prepared to use Python and should consider a consult with the `reticulate` documentation.
 
 
-```{r Hidden Setups for Website, include = FALSE, warning = FALSE, message = FALSE}
+```{r setup, include = FALSE, warning = FALSE, message = FALSE}
 library(knitr)
 library(kableExtra)
+reticulate::use_condaenv("py3.8", required = TRUE)
 ```
 ```{r Set Up, warning = FALSE, message = FALSE}
 library(tidyverse)
@@ -32,9 +33,6 @@ library(reticulate)
 library(rvest)
 library(janitor)
 library(glue)
-
-# i use this to force python chunks to use anaconda distro
-use_condaenv("anaconda3", required = TRUE)
 ```
 
 
@@ -194,7 +192,9 @@ all_scores %>%
 
 # Transform the Data
 
-Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging. 
+Equipped with several years of final scores from the NFL, we can start to perform transformations on the data and start asking questions. As noted in the introduction, we're interested in capturing and measuring close game frequency. We're also going to take a look at win percentage in closely contested games. 
+
+We'll use `case_when()` to establish a rule that defines a close game as a game in which the final score differential is less than eight. To measure win percentage, we can create a column that annotates a team's win. 
 
 
 ```{r transform, warning = FALSE, message = FALSE}
@@ -203,7 +203,42 @@ transform <- all_scores %>%
             as.numeric) %>% 
   mutate(score_difference = abs(team_score - opp_score),
          within_a_score = case_when(score_difference <= 8 ~ 1,
-                                  TRUE ~ 0),
+                            TRUE ~ 0),
          is_win = case_when(team_score > opp_score ~ 1,
-                            TRUE ~ 0))
+                            TRUE ~ 0)
+         ) %>% 
+  group_by(team) %>% 
+  mutate(count_games = n(),
+         count_close_games = sum(within_a_score))  %>% 
+  ungroup()
+```
+
+
+# Close Game Leaderboard
+
+As expected, the Chargers lead the way with close games. 
+
+
+```{r Close Game Count, warning = FALSE, message = FALSE}
+transform %>% 
+  distinct(team, count_close_games) %>% 
+  arrange(desc(count_close_games)) %>% 
+  slice(1:10) %>% 
+  rename(Team = team,
+         `Number of Close Games` = count_close_games) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
+```
+
+
+# Win Percentage in Closely Contested Games
+
+notes here
+
+
+```{r Close Game Win Pct, warning = FALSE, message = FALSE}
+transform %>% 
+  slice(1:10) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
 ```
