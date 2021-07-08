@@ -1,15 +1,15 @@
 ---
-title: The Chargers and Close Games
-author: Jake Waddle
+title: "The Chargers and Close Games"
+author: "Jake Waddle"
 date: '2020-11-30'
-slug: the-chargers-and-close-games
-categories:
-  - R
-  - Python
-tags:
-  - NFL
-  - Chargers
 description: ''
+slug: the-chargers-and-close-games
+tags:
+- NFL
+- Chargers
+categories:
+- R
+- Python
 topics: []
 ---
 
@@ -194,16 +194,38 @@ all_scores %>%
 
 # Transform the Data
 
-Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging. 
+Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging. We'll start by calculating three additional fields. 'score_difference' will hold the margin of victory or defeat. 'within_a_score' will determine if a game's final score is decided by 8 points or less. 'is_win' will store a 1 for wins and 0 for losses. Within our the `summarize` call, we'll assemble metrics as follows: 'win_pct' is the percentage of games resulting in a win. 'close_game_pct' is the percentage of games decided by 8 points or less. 'close_game_win_pct' represents win percentage in games decided by 8 points or less. 'pct_win_close' calculates the percentage of a team's wins which were decided by 8 points or less.  
 
 
 ```{r transform, warning = FALSE, message = FALSE}
 transform <- all_scores %>%
+  mutate(team = case_when(team == 'sdg' ~ 'lac',
+                          team == 'oti' ~ 'ten',
+                          TRUE ~ as.character(team))) %>% 
   mutate_at(vars(team_score, opp_score),
             as.numeric) %>% 
   mutate(score_difference = abs(team_score - opp_score),
          within_a_score = case_when(score_difference <= 8 ~ 1,
                                   TRUE ~ 0),
          is_win = case_when(team_score > opp_score ~ 1,
-                            TRUE ~ 0))
+                            TRUE ~ 0)) %>% 
+  group_by(team) %>% 
+  summarize(win_pct = sum(is_win) / n(),
+            close_game_pct = sum(within_a_score) / n(),
+            close_game_win_pct = sum(is_win[within_a_score == 1]) / length(team[within_a_score ==1]),
+            pct_win_close = sum(within_a_score[is_win == 1]) / sum(is_win))
+```
+
+
+# Visualize
+
+With the data oriented in this manner, we can begin to evaluate the prevalence and performance in close games for the Chargers relative to the rest of the league.
+
+
+```{r visualize, warning = FALSE, message = FALSE}
+ggplot(transform, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
+  geom_text() + 
+  labs(x = 'Win Percentage in One Score Games',
+       y = 'Percentage of One Score Games') + 
+  theme_bw()
 ```
