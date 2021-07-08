@@ -246,6 +246,7 @@
   
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <div id="a-good-way-to-lose" class="section level1">
@@ -278,42 +279,42 @@ url %&gt;%
   glimpse()</code></pre>
 <pre><code>## Rows: 17
 ## Columns: 36
-## $ x          &lt;chr&gt; &quot;Week&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;1...
-## $ x_2        &lt;chr&gt; &quot;Day&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Mon&quot;, &quot;Sun&quot;, &quot;Sun&quot;, ...
-## $ x_3        &lt;chr&gt; &quot;Date&quot;, &quot;September 13&quot;, &quot;September 20&quot;, &quot;September 27&quot;, ...
-## $ x_4        &lt;chr&gt; &quot;&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;box...
-## $ x_5        &lt;chr&gt; &quot;&quot;, &quot;W&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;W&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;W&quot;, &quot;L...
-## $ x_6        &lt;chr&gt; &quot;OT&quot;, &quot;&quot;, &quot;OT&quot;, &quot;&quot;, &quot;&quot;, &quot;OT&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;...
-## $ x_7        &lt;chr&gt; &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;&quot;, &quot;@&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;...
-## $ x_8        &lt;chr&gt; &quot;Opp&quot;, &quot;Cincinnati Bengals&quot;, &quot;Kansas City Chiefs&quot;, &quot;Caro...
-## $ score      &lt;chr&gt; &quot;Tm&quot;, &quot;16&quot;, &quot;20&quot;, &quot;16&quot;, &quot;31&quot;, &quot;27&quot;, &quot;39&quot;, &quot;30&quot;, &quot;26&quot;, &quot;2...
-## $ score_2    &lt;chr&gt; &quot;Opp&quot;, &quot;13&quot;, &quot;23&quot;, &quot;21&quot;, &quot;38&quot;, &quot;30&quot;, &quot;29&quot;, &quot;31&quot;, &quot;31&quot;, &quot;...
-## $ passing    &lt;chr&gt; &quot;Cmp&quot;, &quot;16&quot;, &quot;22&quot;, &quot;35&quot;, &quot;20&quot;, &quot;20&quot;, &quot;28&quot;, &quot;29&quot;, &quot;28&quot;, &quot;...
-## $ passing_2  &lt;chr&gt; &quot;Att&quot;, &quot;30&quot;, &quot;33&quot;, &quot;49&quot;, &quot;25&quot;, &quot;34&quot;, &quot;44&quot;, &quot;44&quot;, &quot;42&quot;, &quot;...
-## $ passing_3  &lt;chr&gt; &quot;Yds&quot;, &quot;207&quot;, &quot;296&quot;, &quot;319&quot;, &quot;278&quot;, &quot;239&quot;, &quot;349&quot;, &quot;275&quot;, ...
-## $ passing_4  &lt;chr&gt; &quot;TD&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;3&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, ...
-## $ passing_5  &lt;chr&gt; &quot;Int&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;,...
-## $ passing_6  &lt;chr&gt; &quot;Sk&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, ...
-## $ passing_7  &lt;chr&gt; &quot;Yds&quot;, &quot;1&quot;, &quot;15&quot;, &quot;11&quot;, &quot;12&quot;, &quot;25&quot;, &quot;2&quot;, &quot;3&quot;, &quot;14&quot;, &quot;13&quot;...
-## $ passing_8  &lt;chr&gt; &quot;Y/A&quot;, &quot;6.9&quot;, &quot;9.4&quot;, &quot;6.7&quot;, &quot;11.6&quot;, &quot;7.8&quot;, &quot;8.0&quot;, &quot;6.3&quot;,...
-## $ passing_9  &lt;chr&gt; &quot;NY/A&quot;, &quot;6.5&quot;, &quot;8.5&quot;, &quot;6.3&quot;, &quot;10.3&quot;, &quot;6.5&quot;, &quot;7.8&quot;, &quot;6.0&quot;...
-## $ passing_10 &lt;chr&gt; &quot;Cmp%&quot;, &quot;53.3&quot;, &quot;66.7&quot;, &quot;71.4&quot;, &quot;80.0&quot;, &quot;58.8&quot;, &quot;63.6&quot;, ...
-## $ passing_11 &lt;chr&gt; &quot;Rate&quot;, &quot;75.3&quot;, &quot;92.5&quot;, &quot;87.0&quot;, &quot;135.9&quot;, &quot;119.6&quot;, &quot;110.9...
-## $ rushing    &lt;chr&gt; &quot;Att&quot;, &quot;39&quot;, &quot;44&quot;, &quot;23&quot;, &quot;23&quot;, &quot;32&quot;, &quot;32&quot;, &quot;38&quot;, &quot;31&quot;, &quot;...
-## $ rushing_2  &lt;chr&gt; &quot;Yds&quot;, &quot;155&quot;, &quot;183&quot;, &quot;117&quot;, &quot;46&quot;, &quot;111&quot;, &quot;135&quot;, &quot;210&quot;, &quot;...
-## $ rushing_3  &lt;chr&gt; &quot;Y/A&quot;, &quot;4.0&quot;, &quot;4.2&quot;, &quot;5.1&quot;, &quot;2.0&quot;, &quot;3.5&quot;, &quot;4.2&quot;, &quot;5.5&quot;, ...
-## $ rushing_4  &lt;chr&gt; &quot;TD&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, ...
-## $ scoring    &lt;chr&gt; &quot;FGM&quot;, &quot;3&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;2&quot;, &quot;3&quot;, &quot;2&quot;, &quot;0&quot;, &quot;2&quot;,...
-## $ scoring_2  &lt;chr&gt; &quot;FGA&quot;, &quot;4&quot;, &quot;2&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;0&quot;, &quot;2&quot;,...
-## $ scoring_3  &lt;chr&gt; &quot;XPM&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;,...
-## $ scoring_4  &lt;chr&gt; &quot;XPA&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;3&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;,...
-## $ punting    &lt;chr&gt; &quot;Pnt&quot;, &quot;5&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;7&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;5&quot;, &quot;3&quot;,...
-## $ punting_2  &lt;chr&gt; &quot;Yds&quot;, &quot;244&quot;, &quot;131&quot;, &quot;119&quot;, &quot;160&quot;, &quot;339&quot;, &quot;138&quot;, &quot;117&quot;, ...
-## $ downs      &lt;chr&gt; &quot;3DConv&quot;, &quot;6&quot;, &quot;6&quot;, &quot;10&quot;, &quot;4&quot;, &quot;8&quot;, &quot;6&quot;, &quot;7&quot;, &quot;7&quot;, &quot;4&quot;, ...
-## $ downs_2    &lt;chr&gt; &quot;3DAtt&quot;, &quot;16&quot;, &quot;13&quot;, &quot;15&quot;, &quot;10&quot;, &quot;17&quot;, &quot;14&quot;, &quot;16&quot;, &quot;15&quot;,...
-## $ downs_3    &lt;chr&gt; &quot;4DConv&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;2&quot;, &quot;...
-## $ downs_4    &lt;chr&gt; &quot;4DAtt&quot;, &quot;2&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;1...
-## $ x_9        &lt;chr&gt; &quot;ToP&quot;, &quot;30:10&quot;, &quot;39:27&quot;, &quot;31:11&quot;, &quot;25:05&quot;, &quot;30:42&quot;, &quot;34:...</code></pre>
+## $ x          &lt;chr&gt; &quot;Week&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;11&quot;,~
+## $ x_2        &lt;chr&gt; &quot;Day&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Mon&quot;, &quot;Sun&quot;, &quot;Sun&quot;, &quot;Su~
+## $ x_3        &lt;chr&gt; &quot;Date&quot;, &quot;September 13&quot;, &quot;September 20&quot;, &quot;September 27&quot;, &quot;Oc~
+## $ x_4        &lt;chr&gt; &quot;&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;boxscore&quot;, &quot;boxsco~
+## $ x_5        &lt;chr&gt; &quot;&quot;, &quot;W&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;W&quot;, &quot;L&quot;, &quot;L&quot;, &quot;L&quot;, &quot;W&quot;, &quot;L&quot;, ~
+## $ x_6        &lt;chr&gt; &quot;OT&quot;, &quot;&quot;, &quot;OT&quot;, &quot;&quot;, &quot;&quot;, &quot;OT&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;~
+## $ x_7        &lt;chr&gt; &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;&quot;, &quot;@&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;@&quot;, &quot;&quot;, &quot;~
+## $ x_8        &lt;chr&gt; &quot;Opp&quot;, &quot;Cincinnati Bengals&quot;, &quot;Kansas City Chiefs&quot;, &quot;Carolin~
+## $ score      &lt;chr&gt; &quot;Tm&quot;, &quot;16&quot;, &quot;20&quot;, &quot;16&quot;, &quot;31&quot;, &quot;27&quot;, &quot;39&quot;, &quot;30&quot;, &quot;26&quot;, &quot;21&quot;,~
+## $ score_2    &lt;chr&gt; &quot;Opp&quot;, &quot;13&quot;, &quot;23&quot;, &quot;21&quot;, &quot;38&quot;, &quot;30&quot;, &quot;29&quot;, &quot;31&quot;, &quot;31&quot;, &quot;29&quot;~
+## $ passing    &lt;chr&gt; &quot;Cmp&quot;, &quot;16&quot;, &quot;22&quot;, &quot;35&quot;, &quot;20&quot;, &quot;20&quot;, &quot;28&quot;, &quot;29&quot;, &quot;28&quot;, &quot;20&quot;~
+## $ passing_2  &lt;chr&gt; &quot;Att&quot;, &quot;30&quot;, &quot;33&quot;, &quot;49&quot;, &quot;25&quot;, &quot;34&quot;, &quot;44&quot;, &quot;44&quot;, &quot;42&quot;, &quot;32&quot;~
+## $ passing_3  &lt;chr&gt; &quot;Yds&quot;, &quot;207&quot;, &quot;296&quot;, &quot;319&quot;, &quot;278&quot;, &quot;239&quot;, &quot;349&quot;, &quot;275&quot;, &quot;31~
+## $ passing_4  &lt;chr&gt; &quot;TD&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;3&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;1&quot;~
+## $ passing_5  &lt;chr&gt; &quot;Int&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1~
+## $ passing_6  &lt;chr&gt; &quot;Sk&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;3&quot;~
+## $ passing_7  &lt;chr&gt; &quot;Yds&quot;, &quot;1&quot;, &quot;15&quot;, &quot;11&quot;, &quot;12&quot;, &quot;25&quot;, &quot;2&quot;, &quot;3&quot;, &quot;14&quot;, &quot;13&quot;, &quot;~
+## $ passing_8  &lt;chr&gt; &quot;Y/A&quot;, &quot;6.9&quot;, &quot;9.4&quot;, &quot;6.7&quot;, &quot;11.6&quot;, &quot;7.8&quot;, &quot;8.0&quot;, &quot;6.3&quot;, &quot;7~
+## $ passing_9  &lt;chr&gt; &quot;NY/A&quot;, &quot;6.5&quot;, &quot;8.5&quot;, &quot;6.3&quot;, &quot;10.3&quot;, &quot;6.5&quot;, &quot;7.8&quot;, &quot;6.0&quot;, &quot;~
+## $ passing_10 &lt;chr&gt; &quot;Cmp%&quot;, &quot;53.3&quot;, &quot;66.7&quot;, &quot;71.4&quot;, &quot;80.0&quot;, &quot;58.8&quot;, &quot;63.6&quot;, &quot;65~
+## $ passing_11 &lt;chr&gt; &quot;Rate&quot;, &quot;75.3&quot;, &quot;92.5&quot;, &quot;87.0&quot;, &quot;135.9&quot;, &quot;119.6&quot;, &quot;110.9&quot;, ~
+## $ rushing    &lt;chr&gt; &quot;Att&quot;, &quot;39&quot;, &quot;44&quot;, &quot;23&quot;, &quot;23&quot;, &quot;32&quot;, &quot;32&quot;, &quot;38&quot;, &quot;31&quot;, &quot;29&quot;~
+## $ rushing_2  &lt;chr&gt; &quot;Yds&quot;, &quot;155&quot;, &quot;183&quot;, &quot;117&quot;, &quot;46&quot;, &quot;111&quot;, &quot;135&quot;, &quot;210&quot;, &quot;128~
+## $ rushing_3  &lt;chr&gt; &quot;Y/A&quot;, &quot;4.0&quot;, &quot;4.2&quot;, &quot;5.1&quot;, &quot;2.0&quot;, &quot;3.5&quot;, &quot;4.2&quot;, &quot;5.5&quot;, &quot;4.~
+## $ rushing_4  &lt;chr&gt; &quot;TD&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;~
+## $ scoring    &lt;chr&gt; &quot;FGM&quot;, &quot;3&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;2&quot;, &quot;3&quot;, &quot;2&quot;, &quot;0&quot;, &quot;2&quot;, &quot;1~
+## $ scoring_2  &lt;chr&gt; &quot;FGA&quot;, &quot;4&quot;, &quot;2&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;0&quot;, &quot;2&quot;, &quot;1~
+## $ scoring_3  &lt;chr&gt; &quot;XPM&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;0~
+## $ scoring_4  &lt;chr&gt; &quot;XPA&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;3&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;1~
+## $ punting    &lt;chr&gt; &quot;Pnt&quot;, &quot;5&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;7&quot;, &quot;4&quot;, &quot;3&quot;, &quot;3&quot;, &quot;5&quot;, &quot;3&quot;, &quot;6~
+## $ punting_2  &lt;chr&gt; &quot;Yds&quot;, &quot;244&quot;, &quot;131&quot;, &quot;119&quot;, &quot;160&quot;, &quot;339&quot;, &quot;138&quot;, &quot;117&quot;, &quot;14~
+## $ downs      &lt;chr&gt; &quot;3DConv&quot;, &quot;6&quot;, &quot;6&quot;, &quot;10&quot;, &quot;4&quot;, &quot;8&quot;, &quot;6&quot;, &quot;7&quot;, &quot;7&quot;, &quot;4&quot;, &quot;9&quot;~
+## $ downs_2    &lt;chr&gt; &quot;3DAtt&quot;, &quot;16&quot;, &quot;13&quot;, &quot;15&quot;, &quot;10&quot;, &quot;17&quot;, &quot;14&quot;, &quot;16&quot;, &quot;15&quot;, &quot;1~
+## $ downs_3    &lt;chr&gt; &quot;4DConv&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;2&quot;, &quot;2&quot;, &quot;0&quot;,~
+## $ downs_4    &lt;chr&gt; &quot;4DAtt&quot;, &quot;2&quot;, &quot;2&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;1&quot;, ~
+## $ x_9        &lt;chr&gt; &quot;ToP&quot;, &quot;30:10&quot;, &quot;39:27&quot;, &quot;31:11&quot;, &quot;25:05&quot;, &quot;30:42&quot;, &quot;34:31&quot;~</code></pre>
 <div id="data-wrangle" class="section level2">
 <h2>Data Wrangle</h2>
 <p>This is a good start, but we need to clean the data. The first row contains the column headers and there are quite a few columns that are not needed to compare final scores. We’ll remove the first row with <code>slice()</code>, add a column to distinguish the season and clean up the column names with <code>dplyr</code>.</p>
@@ -602,8 +603,10 @@ Las Vegas Raiders
 Denver Broncos
 </td>
 <td style="text-align:left;">
+19
 </td>
 <td style="text-align:left;">
+16
 </td>
 </tr>
 <tr>
@@ -617,8 +620,10 @@ Denver Broncos
 Kansas City Chiefs
 </td>
 <td style="text-align:left;">
+38
 </td>
 <td style="text-align:left;">
+21
 </td>
 </tr>
 </tbody>
@@ -681,82 +686,22 @@ opp_score
 <tbody>
 <tr>
 <td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Oakland Raiders
-</td>
-<td style="text-align:left;">
-24
-</td>
-<td style="text-align:left;">
-26
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
-</td>
-<td style="text-align:left;">
-7
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Denver Broncos
-</td>
-<td style="text-align:left;">
-21
-</td>
-<td style="text-align:left;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2018
-</td>
-<td style="text-align:left;">
-15
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Kansas City Chiefs
-</td>
-<td style="text-align:left;">
-29
-</td>
-<td style="text-align:left;">
-28
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 2015
 </td>
 <td style="text-align:left;">
-3
+2
 </td>
 <td style="text-align:left;">
 sdg
 </td>
 <td style="text-align:left;">
-Minnesota Vikings
+Cincinnati Bengals
 </td>
 <td style="text-align:left;">
-14
+19
 </td>
 <td style="text-align:left;">
-31
+24
 </td>
 </tr>
 <tr>
@@ -777,6 +722,66 @@ Buffalo Bills
 </td>
 <td style="text-align:left;">
 27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Pittsburgh Steelers
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Chicago Bears
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+22
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Kansas City Chiefs
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+33
 </td>
 </tr>
 <tr>
@@ -801,7 +806,7 @@ Jacksonville Jaguars
 </tr>
 <tr>
 <td style="text-align:left;">
-2020
+2018
 </td>
 <td style="text-align:left;">
 9
@@ -810,58 +815,18 @@ Jacksonville Jaguars
 sdg
 </td>
 <td style="text-align:left;">
-Las Vegas Raiders
+Seattle Seahawks
 </td>
 <td style="text-align:left;">
-26
-</td>
-<td style="text-align:left;">
-31
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2016
-</td>
-<td style="text-align:left;">
-8
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Denver Broncos
-</td>
-<td style="text-align:left;">
-19
-</td>
-<td style="text-align:left;">
-27
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
+25
 </td>
 <td style="text-align:left;">
 17
 </td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Oakland Raiders
-</td>
-<td style="text-align:left;">
-30
-</td>
-<td style="text-align:left;">
-10
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2017
+2020
 </td>
 <td style="text-align:left;">
 11
@@ -870,13 +835,53 @@ Oakland Raiders
 sdg
 </td>
 <td style="text-align:left;">
-Buffalo Bills
+New York Jets
 </td>
 <td style="text-align:left;">
-54
+34
 </td>
 <td style="text-align:left;">
-24
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Denver Broncos
+</td>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Miami Dolphins
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+14
 </td>
 </tr>
 </tbody>
@@ -1265,15 +1270,33 @@ Pittsburgh Steelers
 </div>
 <div id="transform-the-data" class="section level1">
 <h1>Transform the Data</h1>
-<p>Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging.</p>
+<p>Equipped with several years of final scores from the NFL, we can start to perform transformations and do some digging. We’ll start by calculating three additional fields. ‘score_difference’ will hold the margin of victory or defeat. ‘within_a_score’ will determine if a game’s final score is decided by 8 points or less. ‘is_win’ will store a 1 for wins and 0 for losses. Within our the <code>summarize</code> call, we’ll assemble metrics as follows: ‘win_pct’ is the percentage of games resulting in a win. ‘close_game_pct’ is the percentage of games decided by 8 points or less. ‘close_game_win_pct’ represents win percentage in games decided by 8 points or less. ‘pct_win_close’ calculates the percentage of a team’s wins which were decided by 8 points or less.</p>
 <pre class="r"><code>transform &lt;- all_scores %&gt;%
+  mutate(team = case_when(team == &#39;sdg&#39; ~ &#39;lac&#39;,
+                          team == &#39;oti&#39; ~ &#39;ten&#39;,
+                          TRUE ~ as.character(team))) %&gt;% 
   mutate_at(vars(team_score, opp_score),
             as.numeric) %&gt;% 
   mutate(score_difference = abs(team_score - opp_score),
          within_a_score = case_when(score_difference &lt;= 8 ~ 1,
                                   TRUE ~ 0),
          is_win = case_when(team_score &gt; opp_score ~ 1,
-                            TRUE ~ 0))</code></pre>
+                            TRUE ~ 0)) %&gt;% 
+  group_by(team) %&gt;% 
+  summarize(win_pct = sum(is_win) / n(),
+            close_game_pct = sum(within_a_score) / n(),
+            close_game_win_pct = sum(is_win[within_a_score == 1]) / length(team[within_a_score ==1]),
+            pct_win_close = sum(within_a_score[is_win == 1]) / sum(is_win))</code></pre>
+</div>
+<div id="visualize" class="section level1">
+<h1>Visualize</h1>
+<p>With the data oriented in this manner, we can begin to evaluate the prevalence and performance in close games for the Chargers relative to the rest of the league.</p>
+<pre class="r"><code>ggplot(transform, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
+  geom_text() + 
+  labs(x = &#39;Win Percentage in One Score Games&#39;,
+       y = &#39;Percentage of One Score Games&#39;) + 
+  theme_bw()</code></pre>
+<p><img src="/post/2020-11-30-the-chargers-and-close-games_files/figure-html/visualize-1.png" width="672" /></p>
 </div>
 
   
