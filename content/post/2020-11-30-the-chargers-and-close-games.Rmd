@@ -219,7 +219,32 @@ transform <- all_scores %>%
 
 # Visualize
 
-With the data oriented in this manner, we can begin to evaluate the prevalence and performance in close games for the Chargers relative to the rest of the league.
+With the data oriented in this manner, we can begin to evaluate the prevalence and performance in close games for the Chargers relative to the rest of the league. First, it's worth exploring if Chargers' games are more likely to be close than games played by other teams. As shown, the Chargers do indeed hold the top close game rate in the NFL. I'm shocked.
+
+
+```{r Proportion, warning = FALSE, message = FALSE}
+transform %>% 
+  select(team, close_game_pct) %>% 
+  arrange(desc(close_game_pct)) %>%
+  mutate(close_game_pct = round(100*close_game_pct,0)) %>% 
+  slice(1:10) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
+```
+
+
+Next, Let's explore which teams have the worst win percentage in close games. Stated another way, which teams have the worst win percentage in games decided by 8 points or less? The Chargers come in ranked tied for 3rd worst win percentage in close games. Considering that my team plays in close games nearly two-thirds of the time and wins a little over a third of those contests, it's no wonder this is a frustrated fan base. 
+
+
+```{r Win Pct, warning = FALSE, message = FALSE}
+transform %>% 
+  select(team, close_game_win_pct) %>% 
+  arrange(close_game_win_pct) %>%
+  mutate(close_game_win_pct = round(100*close_game_win_pct,0)) %>% 
+  slice(1:10) %>% 
+  kable(format = 'html') %>% 
+  kable_styling()
+```
 
 
 ```{r visualize, warning = FALSE, message = FALSE}
