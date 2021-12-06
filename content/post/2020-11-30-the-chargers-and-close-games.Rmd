@@ -32,6 +32,8 @@ library(reticulate)
 library(rvest)
 library(janitor)
 library(glue)
+library(nflfastR)
+library(ggimage)
 
 # i use this to force python chunks to use anaconda distro
 use_condaenv("anaconda3", required = TRUE)
@@ -248,8 +250,28 @@ transform %>%
 
 
 ```{r visualize, warning = FALSE, message = FALSE}
-ggplot(transform, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
-  geom_text() + 
+team_data <- teams_colors_logos %>% 
+  mutate(team = tolower(team_abbr),
+         team = case_when(team == 'gb' ~ 'gnb',
+                          team == 'sd' ~ 'lac',
+                          team == 'ari' ~ 'crd',
+                          team == 'bal' ~ 'rav',
+                          team == 'hou' ~ 'htx',
+                          team == 'ind' ~ 'clt',
+                          team == 'kc' ~ 'kan',
+                          team == 'no' ~ 'nor',
+                          team == 'ne' ~ 'nwe',
+                          team == 'oak' ~ 'rai',
+                          team == 'sf' ~ 'sfo',
+                          team == 'tb' ~ 'tam',
+                          team == 'lar' ~ 'ram',
+                          TRUE ~ as.character(team)))
+
+plot <- transform %>% 
+  left_join(team_data)
+  
+ggplot(plot, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
+  geom_image(aes(image = team_logo_wikipedia), size = 0.05, by = "width", asp = 1.618) + 
   labs(x = 'Win Percentage in One Score Games',
        y = 'Percentage of One Score Games') + 
   theme_bw()
