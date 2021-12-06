@@ -13,7 +13,6 @@ categories:
 topics: []
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 <link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
@@ -30,6 +29,8 @@ library(reticulate)
 library(rvest)
 library(janitor)
 library(glue)
+library(nflfastR)
+library(ggimage)
 
 # i use this to force python chunks to use anaconda distro
 use_condaenv(&quot;anaconda3&quot;, required = TRUE)</code></pre>
@@ -455,7 +456,7 @@ opp_score
 <tbody>
 <tr>
 <td style="text-align:left;">
-2015
+2018
 </td>
 <td style="text-align:left;">
 15
@@ -464,41 +465,21 @@ opp_score
 sdg
 </td>
 <td style="text-align:left;">
-Miami Dolphins
+Kansas City Chiefs
 </td>
 <td style="text-align:left;">
-30
+29
 </td>
 <td style="text-align:left;">
-14
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-14
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Jacksonville Jaguars
-</td>
-<td style="text-align:left;">
-45
-</td>
-<td style="text-align:left;">
-10
+28
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2018
+2020
 </td>
 <td style="text-align:left;">
-17
+16
 </td>
 <td style="text-align:left;">
 sdg
@@ -507,55 +488,15 @@ sdg
 Denver Broncos
 </td>
 <td style="text-align:left;">
-23
+19
 </td>
 <td style="text-align:left;">
-9
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-17
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Kansas City Chiefs
-</td>
-<td style="text-align:left;">
-38
-</td>
-<td style="text-align:left;">
-21
+16
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 2019
-</td>
-<td style="text-align:left;">
-9
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Green Bay Packers
-</td>
-<td style="text-align:left;">
-26
-</td>
-<td style="text-align:left;">
-11
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2015
 </td>
 <td style="text-align:left;">
 1
@@ -564,10 +505,90 @@ Green Bay Packers
 sdg
 </td>
 <td style="text-align:left;">
-Detroit Lions
+Indianapolis Colts
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Philadelphia Eagles
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+San Francisco 49ers
+</td>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Pittsburgh Steelers
 </td>
 <td style="text-align:left;">
 33
+</td>
+<td style="text-align:left;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+New York Jets
+</td>
+<td style="text-align:left;">
+34
 </td>
 <td style="text-align:left;">
 28
@@ -575,10 +596,10 @@ Detroit Lions
 </tr>
 <tr>
 <td style="text-align:left;">
-2015
+2019
 </td>
 <td style="text-align:left;">
-14
+11
 </td>
 <td style="text-align:left;">
 sdg
@@ -587,30 +608,10 @@ sdg
 Kansas City Chiefs
 </td>
 <td style="text-align:left;">
-3
+17
 </td>
 <td style="text-align:left;">
-10
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
-</td>
-<td style="text-align:left;">
-7
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Denver Broncos
-</td>
-<td style="text-align:left;">
-21
-</td>
-<td style="text-align:left;">
-0
+24
 </td>
 </tr>
 <tr>
@@ -618,39 +619,39 @@ Denver Broncos
 2020
 </td>
 <td style="text-align:left;">
-3
+4
 </td>
 <td style="text-align:left;">
 sdg
 </td>
 <td style="text-align:left;">
-Carolina Panthers
+Tampa Bay Buccaneers
 </td>
 <td style="text-align:left;">
-16
+31
 </td>
 <td style="text-align:left;">
-21
+38
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2016
+2017
 </td>
 <td style="text-align:left;">
-9
+5
 </td>
 <td style="text-align:left;">
 sdg
 </td>
 <td style="text-align:left;">
-Tennessee Titans
+New York Giants
 </td>
 <td style="text-align:left;">
-43
+27
 </td>
 <td style="text-align:left;">
-35
+22
 </td>
 </tr>
 </tbody>
@@ -741,42 +742,62 @@ opp_score
 <tbody>
 <tr>
 <td style="text-align:left;">
-2020
+2019
 </td>
 <td style="text-align:left;">
-5
+2
 </td>
 <td style="text-align:left;">
-sfo
+dal
 </td>
 <td style="text-align:left;">
-Miami Dolphins
+Washington Redskins
 </td>
 <td style="text-align:left;">
-17
+31
 </td>
 <td style="text-align:left;">
-43
+21
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2015
+2016
 </td>
 <td style="text-align:left;">
-11
+15
 </td>
 <td style="text-align:left;">
-mia
+det
 </td>
 <td style="text-align:left;">
-Dallas Cowboys
+New York Giants
 </td>
 <td style="text-align:left;">
-14
+6
 </td>
 <td style="text-align:left;">
-24
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+cle
+</td>
+<td style="text-align:left;">
+Jacksonville Jaguars
+</td>
+<td style="text-align:left;">
+27
+</td>
+<td style="text-align:left;">
+25
 </td>
 </tr>
 <tr>
@@ -784,16 +805,116 @@ Dallas Cowboys
 2019
 </td>
 <td style="text-align:left;">
-13
+2
 </td>
 <td style="text-align:left;">
-dal
+clt
 </td>
 <td style="text-align:left;">
-Buffalo Bills
+Tennessee Titans
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
 </td>
 <td style="text-align:left;">
 15
+</td>
+<td style="text-align:left;">
+jax
+</td>
+<td style="text-align:left;">
+Washington Redskins
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+rav
+</td>
+<td style="text-align:left;">
+Philadelphia Eagles
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+chi
+</td>
+<td style="text-align:left;">
+Indianapolis Colts
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+jax
+</td>
+<td style="text-align:left;">
+Cincinnati Bengals
+</td>
+<td style="text-align:left;">
+27
+</td>
+<td style="text-align:left;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+clt
+</td>
+<td style="text-align:left;">
+Houston Texans
+</td>
+<td style="text-align:left;">
+23
 </td>
 <td style="text-align:left;">
 26
@@ -801,19 +922,19 @@ Buffalo Bills
 </tr>
 <tr>
 <td style="text-align:left;">
-2017
+2020
 </td>
 <td style="text-align:left;">
-3
+13
 </td>
 <td style="text-align:left;">
-sfo
+oti
 </td>
 <td style="text-align:left;">
-Los Angeles Rams
+Cleveland Browns
 </td>
 <td style="text-align:left;">
-39
+35
 </td>
 <td style="text-align:left;">
 41
@@ -824,55 +945,39 @@ Los Angeles Rams
 2018
 </td>
 <td style="text-align:left;">
-8
+10
 </td>
 <td style="text-align:left;">
-was
+mia
 </td>
 <td style="text-align:left;">
-New York Giants
+Green Bay Packers
 </td>
 <td style="text-align:left;">
-20
+12
 </td>
 <td style="text-align:left;">
-13
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-17
-</td>
-<td style="text-align:left;">
-htx
-</td>
-<td style="text-align:left;">
-Tennessee Titans
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
+31
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2020
+2015
 </td>
 <td style="text-align:left;">
-17
+2
 </td>
 <td style="text-align:left;">
-cin
+min
 </td>
 <td style="text-align:left;">
-Baltimore Ravens
+Detroit Lions
 </td>
 <td style="text-align:left;">
+26
 </td>
 <td style="text-align:left;">
+16
 </td>
 </tr>
 <tr>
@@ -880,19 +985,19 @@ Baltimore Ravens
 2017
 </td>
 <td style="text-align:left;">
-14
+15
 </td>
 <td style="text-align:left;">
-ram
+cin
 </td>
 <td style="text-align:left;">
-Philadelphia Eagles
+Minnesota Vikings
 </td>
 <td style="text-align:left;">
-35
+7
 </td>
 <td style="text-align:left;">
-43
+34
 </td>
 </tr>
 <tr>
@@ -900,59 +1005,19 @@ Philadelphia Eagles
 2018
 </td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-den
-</td>
-<td style="text-align:left;">
-Oakland Raiders
-</td>
-<td style="text-align:left;">
-20
-</td>
-<td style="text-align:left;">
-19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2015
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:left;">
-car
-</td>
-<td style="text-align:left;">
-New Orleans Saints
-</td>
-<td style="text-align:left;">
-27
-</td>
-<td style="text-align:left;">
-22
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2015
-</td>
-<td style="text-align:left;">
 8
 </td>
 <td style="text-align:left;">
-car
+cle
 </td>
 <td style="text-align:left;">
-Indianapolis Colts
+Pittsburgh Steelers
 </td>
 <td style="text-align:left;">
-29
+18
 </td>
 <td style="text-align:left;">
-26
+33
 </td>
 </tr>
 <tr>
@@ -963,74 +1028,16 @@ Indianapolis Colts
 15
 </td>
 <td style="text-align:left;">
-sdg
+phi
 </td>
 <td style="text-align:left;">
-Las Vegas Raiders
+Arizona Cardinals
 </td>
 <td style="text-align:left;">
+26
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:left;">
-crd
-</td>
-<td style="text-align:left;">
-Jacksonville Jaguars
-</td>
-<td style="text-align:left;">
-27
-</td>
-<td style="text-align:left;">
-24
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
-</td>
-<td style="text-align:left;">
-8
-</td>
-<td style="text-align:left;">
-cin
-</td>
-<td style="text-align:left;">
-Indianapolis Colts
-</td>
-<td style="text-align:left;">
-24
-</td>
-<td style="text-align:left;">
-23
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2016
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-nyg
-</td>
-<td style="text-align:left;">
-Pittsburgh Steelers
-</td>
-<td style="text-align:left;">
-14
-</td>
-<td style="text-align:left;">
-24
+33
 </td>
 </tr>
 </tbody>
@@ -1084,6 +1091,14 @@ close_game_pct
 lac
 </td>
 <td style="text-align:right;">
+66
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sea
+</td>
+<td style="text-align:right;">
 62
 </td>
 </tr>
@@ -1092,15 +1107,7 @@ lac
 chi
 </td>
 <td style="text-align:right;">
-60
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sea
-</td>
-<td style="text-align:right;">
-60
+61
 </td>
 </tr>
 <tr>
@@ -1108,7 +1115,7 @@ sea
 nyg
 </td>
 <td style="text-align:right;">
-59
+60
 </td>
 </tr>
 <tr>
@@ -1116,12 +1123,28 @@ nyg
 clt
 </td>
 <td style="text-align:right;">
-57
+59
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 pit
+</td>
+<td style="text-align:right;">
+59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+htx
+</td>
+<td style="text-align:right;">
+58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+det
 </td>
 <td style="text-align:right;">
 57
@@ -1132,23 +1155,7 @@ pit
 tam
 </td>
 <td style="text-align:right;">
-56
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-det
-</td>
-<td style="text-align:right;">
-55
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-htx
-</td>
-<td style="text-align:right;">
-55
+57
 </td>
 </tr>
 <tr>
@@ -1156,7 +1163,7 @@ htx
 atl
 </td>
 <td style="text-align:right;">
-53
+56
 </td>
 </tr>
 </tbody>
@@ -1183,14 +1190,6 @@ close_game_win_pct
 <tbody>
 <tr>
 <td style="text-align:left;">
-cin
-</td>
-<td style="text-align:right;">
-28
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 jax
 </td>
 <td style="text-align:right;">
@@ -1199,10 +1198,18 @@ jax
 </tr>
 <tr>
 <td style="text-align:left;">
+cin
+</td>
+<td style="text-align:right;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 lac
 </td>
 <td style="text-align:right;">
-33
+37
 </td>
 </tr>
 <tr>
@@ -1210,23 +1217,7 @@ lac
 cle
 </td>
 <td style="text-align:right;">
-38
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nyj
-</td>
-<td style="text-align:right;">
-40
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nyg
-</td>
-<td style="text-align:right;">
-40
+37
 </td>
 </tr>
 <tr>
@@ -1234,7 +1225,23 @@ nyg
 sfo
 </td>
 <td style="text-align:right;">
-42
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nyg
+</td>
+<td style="text-align:right;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nyj
+</td>
+<td style="text-align:right;">
+43
 </td>
 </tr>
 <tr>
@@ -1242,7 +1249,7 @@ sfo
 tam
 </td>
 <td style="text-align:right;">
-43
+44
 </td>
 </tr>
 <tr>
@@ -1250,7 +1257,7 @@ tam
 chi
 </td>
 <td style="text-align:right;">
-43
+44
 </td>
 </tr>
 <tr>
@@ -1258,13 +1265,33 @@ chi
 rav
 </td>
 <td style="text-align:right;">
-43
+44
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>ggplot(transform, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
-  geom_text() + 
+<pre class="r"><code>team_data &lt;- teams_colors_logos %&gt;% 
+  mutate(team = tolower(team_abbr),
+         team = case_when(team == &#39;gb&#39; ~ &#39;gnb&#39;,
+                          team == &#39;sd&#39; ~ &#39;lac&#39;,
+                          team == &#39;ari&#39; ~ &#39;crd&#39;,
+                          team == &#39;bal&#39; ~ &#39;rav&#39;,
+                          team == &#39;hou&#39; ~ &#39;htx&#39;,
+                          team == &#39;ind&#39; ~ &#39;clt&#39;,
+                          team == &#39;kc&#39; ~ &#39;kan&#39;,
+                          team == &#39;no&#39; ~ &#39;nor&#39;,
+                          team == &#39;ne&#39; ~ &#39;nwe&#39;,
+                          team == &#39;oak&#39; ~ &#39;rai&#39;,
+                          team == &#39;sf&#39; ~ &#39;sfo&#39;,
+                          team == &#39;tb&#39; ~ &#39;tam&#39;,
+                          team == &#39;lar&#39; ~ &#39;ram&#39;,
+                          TRUE ~ as.character(team)))
+
+plot &lt;- transform %&gt;% 
+  left_join(team_data)
+  
+ggplot(plot, aes(x = close_game_win_pct, y = close_game_pct, label = team)) + 
+  geom_image(aes(image = team_logo_wikipedia), size = 0.05, by = &quot;width&quot;, asp = 1.618) + 
   labs(x = &#39;Win Percentage in One Score Games&#39;,
        y = &#39;Percentage of One Score Games&#39;) + 
   theme_bw()</code></pre>
