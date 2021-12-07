@@ -13,6 +13,7 @@ categories:
 topics: []
 ---
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 <link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
@@ -33,11 +34,11 @@ library(nflfastR)
 library(ggimage)
 
 # i use this to force python chunks to use anaconda distro
-use_condaenv(&quot;anaconda3&quot;, required = TRUE)</code></pre>
+#use_condaenv(&quot;anaconda3&quot;, required = TRUE)</code></pre>
 </div>
 <div id="finding-a-game-log" class="section level1">
 <h1>Finding a Game Log</h1>
-<p>In order to compare close game rates between NFL teams, we’ll need to find a source for historical scores. <a href="&#39;https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html&#39;">Pro Football Reference</a> looks to contain the information we need. Inspecting the HTML in a browser, you can see the table class id is “gamelog2020”. With the <code>rvest</code> package, we can parse the html and search xpaths for "//*<span class="citation">[@id="gamelog2020"]</span>". We’ll rely on the <code>html_table()</code> function to return a list of child tables (which should result in 1 table).</p>
+<p>In order to compare close game rates between NFL teams, we’ll need to find a source for historical scores. <a href="&#39;https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html&#39;">Pro Football Reference</a> looks to contain the information we need. Inspecting the HTML in a browser, you can see the table class id is “gamelog2020”. With the <code>rvest</code> package, we can parse the html and search xpaths for “//*<span class="citation">[@id="gamelog2020"]</span>“. We’ll rely on the <code>html_table()</code> function to return a list of child tables (which should result in 1 table).</p>
 <pre class="r"><code>url &lt;- &#39;https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html&#39;
 
 url %&gt;% 
@@ -456,22 +457,22 @@ opp_score
 <tbody>
 <tr>
 <td style="text-align:left;">
-2018
+2015
 </td>
 <td style="text-align:left;">
-15
+8
 </td>
 <td style="text-align:left;">
 sdg
 </td>
 <td style="text-align:left;">
-Kansas City Chiefs
+Baltimore Ravens
+</td>
+<td style="text-align:left;">
+26
 </td>
 <td style="text-align:left;">
 29
-</td>
-<td style="text-align:left;">
-28
 </td>
 </tr>
 <tr>
@@ -479,7 +480,7 @@ Kansas City Chiefs
 2020
 </td>
 <td style="text-align:left;">
-16
+8
 </td>
 <td style="text-align:left;">
 sdg
@@ -488,10 +489,130 @@ sdg
 Denver Broncos
 </td>
 <td style="text-align:left;">
-19
+30
 </td>
 <td style="text-align:left;">
-16
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Kansas City Chiefs
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Washington Redskins
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Denver Broncos
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Denver Broncos
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Atlanta Falcons
+</td>
+<td style="text-align:left;">
+33
+</td>
+<td style="text-align:left;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+sdg
+</td>
+<td style="text-align:left;">
+Pittsburgh Steelers
+</td>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+24
 </td>
 </tr>
 <tr>
@@ -516,142 +637,22 @@ Indianapolis Colts
 </tr>
 <tr>
 <td style="text-align:left;">
-2017
+2015
 </td>
 <td style="text-align:left;">
-4
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Philadelphia Eagles
-</td>
-<td style="text-align:left;">
-24
-</td>
-<td style="text-align:left;">
-26
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2018
-</td>
-<td style="text-align:left;">
-4
+3
 </td>
 <td style="text-align:left;">
 sdg
 </td>
 <td style="text-align:left;">
-San Francisco 49ers
+Minnesota Vikings
 </td>
 <td style="text-align:left;">
-29
-</td>
-<td style="text-align:left;">
-27
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2018
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Pittsburgh Steelers
-</td>
-<td style="text-align:left;">
-33
-</td>
-<td style="text-align:left;">
-30
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-11
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-New York Jets
-</td>
-<td style="text-align:left;">
-34
-</td>
-<td style="text-align:left;">
-28
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-11
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Kansas City Chiefs
-</td>
-<td style="text-align:left;">
-17
-</td>
-<td style="text-align:left;">
-24
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-Tampa Bay Buccaneers
+14
 </td>
 <td style="text-align:left;">
 31
-</td>
-<td style="text-align:left;">
-38
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2017
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:left;">
-sdg
-</td>
-<td style="text-align:left;">
-New York Giants
-</td>
-<td style="text-align:left;">
-27
-</td>
-<td style="text-align:left;">
-22
 </td>
 </tr>
 </tbody>
@@ -742,242 +743,42 @@ opp_score
 <tbody>
 <tr>
 <td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-dal
-</td>
-<td style="text-align:left;">
-Washington Redskins
-</td>
-<td style="text-align:left;">
-31
-</td>
-<td style="text-align:left;">
-21
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2016
-</td>
-<td style="text-align:left;">
-15
-</td>
-<td style="text-align:left;">
-det
-</td>
-<td style="text-align:left;">
-New York Giants
-</td>
-<td style="text-align:left;">
-6
-</td>
-<td style="text-align:left;">
-17
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:left;">
-cle
-</td>
-<td style="text-align:left;">
-Jacksonville Jaguars
-</td>
-<td style="text-align:left;">
-27
-</td>
-<td style="text-align:left;">
-25
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-clt
-</td>
-<td style="text-align:left;">
-Tennessee Titans
-</td>
-<td style="text-align:left;">
-19
-</td>
-<td style="text-align:left;">
-17
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 2018
 </td>
 <td style="text-align:left;">
-15
+9
 </td>
 <td style="text-align:left;">
-jax
+was
 </td>
 <td style="text-align:left;">
-Washington Redskins
+Atlanta Falcons
 </td>
 <td style="text-align:left;">
-13
+14
 </td>
 <td style="text-align:left;">
-16
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-6
-</td>
-<td style="text-align:left;">
-rav
-</td>
-<td style="text-align:left;">
-Philadelphia Eagles
-</td>
-<td style="text-align:left;">
-30
-</td>
-<td style="text-align:left;">
-28
+38
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 2020
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:left;">
-chi
-</td>
-<td style="text-align:left;">
-Indianapolis Colts
-</td>
-<td style="text-align:left;">
-11
-</td>
-<td style="text-align:left;">
-19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2019
-</td>
-<td style="text-align:left;">
-7
-</td>
-<td style="text-align:left;">
-jax
-</td>
-<td style="text-align:left;">
-Cincinnati Bengals
-</td>
-<td style="text-align:left;">
-27
 </td>
 <td style="text-align:left;">
 17
 </td>
-</tr>
-<tr>
 <td style="text-align:left;">
-2016
+rai
 </td>
 <td style="text-align:left;">
-6
+Denver Broncos
 </td>
 <td style="text-align:left;">
-clt
-</td>
-<td style="text-align:left;">
-Houston Texans
-</td>
-<td style="text-align:left;">
-23
-</td>
-<td style="text-align:left;">
-26
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2020
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-oti
-</td>
-<td style="text-align:left;">
-Cleveland Browns
-</td>
-<td style="text-align:left;">
-35
-</td>
-<td style="text-align:left;">
-41
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2018
-</td>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-mia
-</td>
-<td style="text-align:left;">
-Green Bay Packers
-</td>
-<td style="text-align:left;">
-12
+32
 </td>
 <td style="text-align:left;">
 31
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2015
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-min
-</td>
-<td style="text-align:left;">
-Detroit Lions
-</td>
-<td style="text-align:left;">
-26
-</td>
-<td style="text-align:left;">
-16
 </td>
 </tr>
 <tr>
@@ -985,39 +786,59 @@ Detroit Lions
 2017
 </td>
 <td style="text-align:left;">
-15
+16
 </td>
 <td style="text-align:left;">
-cin
+den
 </td>
 <td style="text-align:left;">
-Minnesota Vikings
+Washington Redskins
 </td>
 <td style="text-align:left;">
-7
+11
 </td>
 <td style="text-align:left;">
-34
+27
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2018
+2017
 </td>
 <td style="text-align:left;">
 8
 </td>
 <td style="text-align:left;">
-cle
+buf
 </td>
 <td style="text-align:left;">
-Pittsburgh Steelers
+Oakland Raiders
 </td>
 <td style="text-align:left;">
-18
+34
 </td>
 <td style="text-align:left;">
-33
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+nyj
+</td>
+<td style="text-align:left;">
+New England Patriots
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+30
 </td>
 </tr>
 <tr>
@@ -1025,19 +846,199 @@ Pittsburgh Steelers
 2020
 </td>
 <td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+gnb
+</td>
+<td style="text-align:left;">
+Tampa Bay Buccaneers
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+den
+</td>
+<td style="text-align:left;">
+Las Vegas Raiders
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+37
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+clt
+</td>
+<td style="text-align:left;">
+Jacksonville Jaguars
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+tam
+</td>
+<td style="text-align:left;">
+Oakland Raiders
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+htx
+</td>
+<td style="text-align:left;">
+Detroit Lions
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+sfo
+</td>
+<td style="text-align:left;">
+Cleveland Browns
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+det
+</td>
+<td style="text-align:left;">
+Minnesota Vikings
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+42
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+min
+</td>
+<td style="text-align:left;">
+Green Bay Packers
+</td>
+<td style="text-align:left;">
+28
+</td>
+<td style="text-align:left;">
+22
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+chi
+</td>
+<td style="text-align:left;">
+Green Bay Packers
+</td>
+<td style="text-align:left;">
+23
+</td>
+<td style="text-align:left;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
 15
 </td>
 <td style="text-align:left;">
-phi
+chi
 </td>
 <td style="text-align:left;">
-Arizona Cardinals
+Green Bay Packers
 </td>
 <td style="text-align:left;">
-26
+27
 </td>
 <td style="text-align:left;">
-33
+30
 </td>
 </tr>
 </tbody>

@@ -36,7 +36,7 @@ library(nflfastR)
 library(ggimage)
 
 # i use this to force python chunks to use anaconda distro
-use_condaenv("anaconda3", required = TRUE)
+#use_condaenv("anaconda3", required = TRUE)
 ```
 
 
