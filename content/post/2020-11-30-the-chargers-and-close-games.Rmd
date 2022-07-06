@@ -151,7 +151,7 @@ First on the agenda is transferring our python object over to R. Then we need to
 
 ```{r Parse Team Slugs from Python, warning=FALSE, message=FALSE}
 team_slugs <- py$teamSlugList %>% # pass to R
-  map(~ substr(., 8, 10)) %>% # extract team slug
+  map(~ substr(., 8, 10)) %>% # extract team slugs
   unlist()
 
 print(team_slugs[1:5])
