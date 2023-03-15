@@ -46,7 +46,7 @@ In order to compare close game rates between NFL teams, we'll need to find a sou
 
 
 ```{r, message = FALSE, warning = FALSE}
-url <- 'https://www.pro-football-reference.com/teams/sdg/2020/gamelog.html'
+url <- 'https://www.pro-football-reference.com/teams/sdg/2020/gamelog'
 
 url %>% 
   read_html() %>% 
@@ -88,7 +88,7 @@ It's nice having one season's worth of scores, but we are trying to acquire scor
 
 ```{r, message = FALSE, warning = FALSE}
 scrape_pfr_team_game_logs <- function(year) {
-  url <- glue::glue('https://www.pro-football-reference.com/teams/sdg/{year}/gamelog.html')
+  url <- glue::glue('https://www.pro-football-reference.com/teams/sdg/{year}/gamelog')
   
   url %>% 
   read_html() %>% 
@@ -106,7 +106,7 @@ scrape_pfr_team_game_logs <- function(year) {
          opp_score = score_2)
 }
 
-years <- 2015:2020
+years <- 2015:2021
 
 scores <- map_df(years, scrape_pfr_team_game_logs)
 
@@ -166,9 +166,9 @@ teams_and_years <- crossing(year = years, team = team_slugs) # all possible comb
 
 # use glue to concat input w/ strings
 scrape_pfr_team_game_logs <- function(team, year) {
-  url <- glue::glue('https://www.pro-football-reference.com/teams/{team}/{year}/gamelog.html')
+  url <- glue::glue('https://www.pro-football-reference.com/teams/{team}/{year}/gamelog')
   
-  url %>% 
+  df <- url %>% 
   read_html() %>% 
   html_nodes(xpath = glue::glue('//*[@id="gamelog{year}"]')) %>%
   html_table() %>% 
@@ -183,6 +183,10 @@ scrape_pfr_team_game_logs <- function(team, year) {
          team_score = score,
          opp_score = score_2) %>%
   filter(!is.na(team_score)) # unplayed games can be filtered out
+  
+  Sys.sleep(2)
+  
+  return(df)
 }
 
 all_scores <- pmap_df(teams_and_years, scrape_pfr_team_game_logs)
